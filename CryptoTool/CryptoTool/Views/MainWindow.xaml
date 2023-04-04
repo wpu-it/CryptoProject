@@ -1,0 +1,73 @@
+﻿<Window x:Class="CryptoTool.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CryptoTool.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100px"></RowDefinition>
+            <RowDefinition Height="250px"></RowDefinition>
+            <RowDefinition Height="100px"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DataGrid AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserSortColumns="False"
+                 CanUserResizeColumns="False"
+                HeadersVisibility="All"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                ItemsSource="{Binding Assets}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Image}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    Header="Name">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Name"></Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                    Header="Symbol">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Symbol">
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                    Header="Price ($)">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Price">
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                    Header="Volume ($)">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Volume">
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
