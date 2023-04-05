@@ -17,11 +17,28 @@ namespace CryptoTool.Views
 {
     public partial class MainWindow : Window
     {
-        MainViewModel viewModel = new MainViewModel();
+        private MainViewModel viewModel;
+        private DetailsViewModel detailsViewModel;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = viewModel;
+            viewModel = new MainViewModel();
+            viewModel.NavigationRequested += Navigate;
+            detailsViewModel = new DetailsViewModel();
+            frame.Navigate(new MainWindowPageStart("start", viewModel));
+        }
+
+        public void Navigate(string dest)
+        {
+            switch (dest)
+            {
+                case "MainWindowPageStart":
+                    frame.Navigate(new MainWindowPageStart("start", viewModel));
+                    break;
+                case "DetailsPage":
+                    frame.Navigate(new DetailsPage("start", detailsViewModel));
+                    break;
+            }
         }
     }
 }

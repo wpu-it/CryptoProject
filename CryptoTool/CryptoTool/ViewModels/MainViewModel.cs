@@ -1,4 +1,5 @@
-﻿using CryptoTool.Models;
+﻿using CryptoTool.Commands;
+using CryptoTool.Models;
 using CryptoTool.Models.Coins;
 using CryptoTool.Models.Exchanges;
 using Newtonsoft.Json;
@@ -17,6 +18,8 @@ namespace CryptoTool.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        public delegate void NavigationHandler(string destination);
+        public event NavigationHandler NavigationRequested;
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged(string info)
         {
@@ -26,6 +29,11 @@ namespace CryptoTool.ViewModels
             }
         }
         private ObservableCollection<Asset> _assets;
+        private ListCollectionView _view;
+        private string _blockText;
+        private string _exchangeLogoUrl;
+        private ProcessCommand _detailsCommand;
+
         public ObservableCollection<Asset> Assets
         {
             get { return _assets; }
@@ -35,12 +43,29 @@ namespace CryptoTool.ViewModels
                 OnPropertyChanged("Assets");
             }
         }
-
-        private ListCollectionView _view;
+        public string ExchangeLogoUrl 
+        {
+            get { return _exchangeLogoUrl; }
+            set
+            {
+                _exchangeLogoUrl = value;
+                OnPropertyChanged("ExchangeLogoUrl");
+            }
+        }
+        public string BlockText {
+            get { return _blockText; }
+            set {
+                _blockText = value;
+                OnPropertyChanged("BlockText");
+            }
+        }
         public ICollectionView View
         {
             get { return _view; }
         }
+        public ProcessCommand DetailsCommand => _detailsCommand ?? (_detailsCommand = new ProcessCommand(obj => {
+            NavigationRequested?.Invoke("DetailsPage");
+        }));
         public MainViewModel()
         {
             SetInitialData();
@@ -48,20 +73,22 @@ namespace CryptoTool.ViewModels
 
         public async void SetInitialData()
         {
-            await GetData();
-            _view = new ListCollectionView(Assets);
+            //await GetData("binance");
+            //_view = new ListCollectionView(Assets);
         }
 
-        public async Task GetData()
+        public async Task GetData(string exchangeParam)
         {
+            BlockText = $"Top 5 currencies by trade volume on {exchangeParam}".ToUpper();
             // Getting popular tickers on Binance
-            string url = "https://api.coingecko.com/api/v3/exchanges/binance/tickers?order=volume_desc";
+            string url = $"https://api.coingecko.com/api/v3/exchanges/{exchangeParam.ToLower()}/tickers?include_exchange_logo=true&order=volume_desc";
             using(var client = new HttpClient())
             {
                 string json = await client.GetStringAsync(url);
                 var exchange = JsonConvert.DeserializeObject<Exchange>(json);
+                ExchangeLogoUrl = exchange.Tickers[0].Market.Logo;
                 List<Asset> assets = new List<Asset>();
-                for(int i = 0; i < exchange.Tickers.Count; i++)
+                for (int i = 0; i < exchange.Tickers.Count; i++)
                 {
                     var found_element = assets.Find((ass) =>
                     {
@@ -77,13 +104,13 @@ namespace CryptoTool.ViewModels
                         {
                             Id = coin.Id,
                             Volume = exchange.Tickers[i].Volume,
-                            Symbol = coin.Symbol,
+                            Symbol = coin.Symbol.ToUpper(),
                             Name = coin.Name,
                             Image = coin.Image.Small,
                             Price = coin.Market_Data.Current_Price.USD
                         });
                     }
-                    if (assets.Count == 10) break;
+                    if (assets.Count == 5) break;
                 }
                 Assets = new ObservableCollection<Asset>(assets);
             }
