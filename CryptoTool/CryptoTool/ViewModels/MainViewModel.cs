@@ -25,7 +25,12 @@ namespace CryptoTool.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
+
         private ObservableCollection<Asset> _assets;
+        private string _blockText;
+        private string _exchangeLogoUrl;
+        private Asset _selectedAsset;
+
         public ObservableCollection<Asset> Assets
         {
             get { return _assets; }
@@ -35,12 +40,35 @@ namespace CryptoTool.ViewModels
                 OnPropertyChanged("Assets");
             }
         }
-
-        private ListCollectionView _view;
-        public ICollectionView View
+        public string ExchangeLogoUrl 
         {
-            get { return _view; }
+            get { return _exchangeLogoUrl; }
+            set
+            {
+                _exchangeLogoUrl = value;
+                OnPropertyChanged("ExchangeLogoUrl");
+            }
         }
+        public string BlockText {
+            get { return _blockText; }
+            set {
+                _blockText = value;
+                OnPropertyChanged("BlockText");
+            }
+        }
+        public Asset SelectedAsset
+        {
+            get { return _selectedAsset; }
+            set
+            {
+                if (value != _selectedAsset)
+                {
+                    _selectedAsset = value;
+                    OnPropertyChanged(nameof(SelectedAsset));
+                }
+            }
+        }
+
         public MainViewModel()
         {
             SetInitialData();
@@ -48,20 +76,21 @@ namespace CryptoTool.ViewModels
 
         public async void SetInitialData()
         {
-            await GetData();
-            _view = new ListCollectionView(Assets);
+            await GetData("binance");
         }
 
-        public async Task GetData()
+        public async Task GetData(string exchangeParam)
         {
+            BlockText = $"Top 5 currencies by trade volume on {exchangeParam}".ToUpper();
             // Getting popular tickers on Binance
-            string url = "https://api.coingecko.com/api/v3/exchanges/binance/tickers?order=volume_desc";
+            string url = $"https://api.coingecko.com/api/v3/exchanges/{exchangeParam.ToLower()}/tickers?include_exchange_logo=true&order=volume_desc";
             using(var client = new HttpClient())
             {
                 string json = await client.GetStringAsync(url);
                 var exchange = JsonConvert.DeserializeObject<Exchange>(json);
+                ExchangeLogoUrl = exchange.Tickers[0].Market.Logo;
                 List<Asset> assets = new List<Asset>();
-                for(int i = 0; i < exchange.Tickers.Count; i++)
+                for (int i = 0; i < exchange.Tickers.Count; i++)
                 {
                     var found_element = assets.Find((ass) =>
                     {
@@ -77,13 +106,13 @@ namespace CryptoTool.ViewModels
                         {
                             Id = coin.Id,
                             Volume = exchange.Tickers[i].Volume,
-                            Symbol = coin.Symbol,
+                            Symbol = coin.Symbol.ToUpper(),
                             Name = coin.Name,
                             Image = coin.Image.Small,
                             Price = coin.Market_Data.Current_Price.USD
                         });
                     }
-                    if (assets.Count == 10) break;
+                    if (assets.Count == 1) break;
                 }
                 Assets = new ObservableCollection<Asset>(assets);
             }

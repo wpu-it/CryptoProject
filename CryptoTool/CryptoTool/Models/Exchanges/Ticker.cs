@@ -13,5 +13,6 @@ namespace CryptoTool.Models.Exchanges
         public double Volume { get; set; }
         public string Trade_URL { get; set; }
         public string Coin_Id { get; set; }
+        public Market Market { get; set; }
     }
 }

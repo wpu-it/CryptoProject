@@ -12,28 +12,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CryptoTool.Views
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Логика взаимодействия для DetailsPage.xaml
+    /// </summary>
+    public partial class DetailsPage : Page
     {
-        public MainWindow()
+        private string _from;
+        private DetailsViewModel _viewModel;
+        public DetailsPage(string from, Asset asset)
         {
             InitializeComponent();
-            var startPage = new MainWindowPageStart("start");
-            startPage.NavigationRequested += Navigate;
-            frame.Navigate(startPage);
-        }
+            _from = from;
+            _viewModel = new DetailsViewModel(asset);
+            DataContext = _viewModel;
 
-        public void Navigate(string dest, Asset asset)
-        {
-            switch (dest)
-            {
-                case "DetailPage":
-                    frame.Navigate(new DetailsPage("start", asset));
-                    break;
-            }
         }
     }
 }
