@@ -10,9 +10,9 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="Beige"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d" Height="500" Width="800">
+        mc:Ignorable="d" Title="Main page">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -60,8 +60,8 @@
                  Grid.Row="2"
                  Grid.Column="0"
                  Grid.ColumnSpan="2"
-                 SelectedItem="{Binding SelectedAsset}"
                  ItemsSource="{Binding Assets}"
+                  Background="Lavender"
                  MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="50" IsReadOnly="True">

@@ -31,6 +31,32 @@ namespace CryptoTool.Views
             _viewModel = new DetailsViewModel(asset);
             DataContext = _viewModel;
 
+            asset.PriceChange24hPercentage = Math.Round(asset.PriceChange24hPercentage, 1);
+            if (asset.PriceChange24hPercentage < 0)
+            {
+                tblPriceChange.Foreground = Brushes.Red;
+            }
+            else if(asset.PriceChange24hPercentage > 0)
+            {
+                tblPriceChange.Foreground = Brushes.Green;
+            }
+        }
+
+        private async void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string value = tbxSearch.Text;
+            await _viewModel.GetAsset(value);
+        }
+
+        private void DataGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as DataGrid;
+            var item = grid.SelectedItem as AssetMarket;
+            if(item is not null)
+            {
+                var browser = new BrowserWindow(item.Trade_URL);
+                browser.Show();
+            }
         }
     }
 }
