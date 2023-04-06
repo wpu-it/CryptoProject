@@ -11,7 +11,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="Lavender"
         FontFamily="{DynamicResource MaterialDesignFont}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -24,13 +24,31 @@
             <RowDefinition Height="60px"></RowDefinition>
             <RowDefinition Height="30px"></RowDefinition>
             <RowDefinition Height="30px"></RowDefinition>
+            <RowDefinition Height="40px"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
+        <Grid Margin="15px 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="tbxSearch" Width="250" VerticalAlignment="Center"
+                     materialDesign:HintAssist.HelperText="Search for some other currency"/>
+            <Button Grid.Column="1" HorizontalAlignment="Left" Height="30" Width="30" Margin="20px 0"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryLightButton}"
+                    ToolTip="Search"
+                    Click="BtnSearch_Click">
+                <materialDesign:PackIcon Kind="SearchWeb"/>
+            </Button>
+        </Grid>
         <Grid Grid.Row="1" Margin="20px 0">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
@@ -93,9 +111,56 @@
             </TextBlock>
         </StackPanel>
         <chart:SfChart Grid.Column="1"
-                       Grid.Row="1"
-                       Grid.RowSpan="4">
+                       Grid.RowSpan="5"
+                       Margin="0 10px">
             
         </chart:SfChart>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="Markets"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="20px"/>
+        <DataGrid Grid.Row="6" Grid.ColumnSpan="2"
+                  AutoGenerateColumns="False" CanUserAddRows="False"
+                 CanUserSortColumns="False" CanUserResizeColumns="False" Padding="10px 0"
+                 HeadersVisibility="All" Background="Beige" ItemsSource="{Binding Asset.AssetMarkets}"
+                  MouseLeftButtonUp="DataGrid_MouseDown">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding MarketImage}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    Header="Exchange" Width="100">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="MarketName"></Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    Header="Pair" Width="100">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0}/{1}">
+                            <Binding Path="Base"/>
+                            <Binding Path="Target"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    Header="Price" Width="150">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} $">
+                            <Binding Path="Price"></Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridHyperlinkColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    Header="URL" Width="1*">
+                    <DataGridHyperlinkColumn.Binding>
+                        <Binding Path="Trade_URL"></Binding>
+                    </DataGridHyperlinkColumn.Binding>
+                </DataGridHyperlinkColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

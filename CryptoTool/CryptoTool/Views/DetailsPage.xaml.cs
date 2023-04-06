@@ -41,5 +41,20 @@ namespace CryptoTool.Views
                 tblPriceChange.Foreground = Brushes.Green;
             }
         }
+
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            string value = tbxSearch.Text;
+            ;
+        }
+
+        private void DataGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var grid = sender as DataGrid;
+            var item = grid.SelectedItem as AssetMarket;
+            var browser = new BrowserWindow(item.Trade_URL);
+            browser.Show();
+            ;
+        }
     }
 }

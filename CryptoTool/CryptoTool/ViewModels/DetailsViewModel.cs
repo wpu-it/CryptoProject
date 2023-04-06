@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CryptoTool.ViewModels
 {
@@ -59,6 +60,14 @@ namespace CryptoTool.ViewModels
                     var change = JsonConvert.DeserializeObject<Exchange>(json);
                     Asset.AssetMarkets[i].MarketImage = change.Image;
                }
+            }
+        }
+
+        public async Task GetAsset(string searchValue)
+        {
+            using(var client = new HttpClient())
+            {
+                string url = $"https://api.coingecko.com/api/v3/coins/{exchange.Tickers[i].Coin_Id}?tickers=true&market_data=true&community_data=false&developer_data=false";
             }
         }
     }

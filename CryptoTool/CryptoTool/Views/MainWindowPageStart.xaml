@@ -10,7 +10,7 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="Beige"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d" Height="500" Width="800" Title="Main page">
 
@@ -61,6 +61,7 @@
                  Grid.Column="0"
                  Grid.ColumnSpan="2"
                  ItemsSource="{Binding Assets}"
+                  Background="Lavender"
                  MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="50" IsReadOnly="True">
