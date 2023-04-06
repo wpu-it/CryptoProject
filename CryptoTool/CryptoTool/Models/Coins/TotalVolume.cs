@@ -8,6 +8,6 @@ namespace CryptoTool.Models.Coins
 {
     public class TotalVolume
     {
-        public double USD { get; set; }
+        public string USD { get; set; }
     }
 }

@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Syncfusion.SfChart.WPF" Version="21.1.38" />
   </ItemGroup>
 
 </Project>

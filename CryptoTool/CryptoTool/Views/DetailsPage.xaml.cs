@@ -31,6 +31,15 @@ namespace CryptoTool.Views
             _viewModel = new DetailsViewModel(asset);
             DataContext = _viewModel;
 
+            asset.PriceChange24hPercentage = Math.Round(asset.PriceChange24hPercentage, 1);
+            if (asset.PriceChange24hPercentage < 0)
+            {
+                tblPriceChange.Foreground = Brushes.Red;
+            }
+            else if(asset.PriceChange24hPercentage > 0)
+            {
+                tblPriceChange.Foreground = Brushes.Green;
+            }
         }
     }
 }

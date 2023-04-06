@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:chart="clr-namespace:Syncfusion.UI.Xaml.Charts;assembly=Syncfusion.SfChart.WPF"
         xmlns:local="clr-namespace:CryptoTool.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -19,14 +20,82 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60px"></RowDefinition>
-            <RowDefinition Height="100px"></RowDefinition>
             <RowDefinition Height="50px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="30px"></RowDefinition>
+            <RowDefinition Height="30px"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+
+        <Grid Grid.Row="1" Margin="20px 0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="{Binding Asset.Image}"
+                   VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Margin="10px 0" FontWeight="Bold" FontSize="20px"
+                       TextAlignment="Left" VerticalAlignment="Center"
+                           Text="{Binding Asset.Name}"/>
+                <TextBlock FontSize="16px"
+                       Text="{Binding Asset.Symbol}" 
+                       TextAlignment="Left" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    Margin="20px 0">
+            <TextBlock FontSize="24px" FontWeight="Bold" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} $">
+                        <Binding Path="Asset.Price" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock x:Name="tblPriceChange" VerticalAlignment="Center"
+                       FontWeight="DemiBold" Margin="10px 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0}%">
+                        <Binding Path="Asset.PriceChange24hPercentage" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="20px 0" Grid.Row="3" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" 
+                   Text="Market capitalization:"/>
+            <TextBlock VerticalAlignment="Center" FontWeight="DemiBold" 
+                    Margin="90px 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} $">
+                        <Binding Path="Asset.MarketCap" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="20px 0" Grid.Row="4" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" 
+                   Text="Total trade volume:"/>
+            <TextBlock VerticalAlignment="Center" FontWeight="DemiBold" 
+                   Margin="103px 0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0} $">
+                        <Binding Path="Asset.TotalVolume" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+        <chart:SfChart Grid.Column="1"
+                       Grid.Row="1"
+                       Grid.RowSpan="4">
+            
+        </chart:SfChart>
     </Grid>
 </Page>

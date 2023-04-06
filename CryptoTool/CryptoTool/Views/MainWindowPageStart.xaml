@@ -12,7 +12,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d" Height="500" Width="800">
+        mc:Ignorable="d" Height="500" Width="800" Title="Main page">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -60,7 +60,6 @@
                  Grid.Row="2"
                  Grid.Column="0"
                  Grid.ColumnSpan="2"
-                 SelectedItem="{Binding SelectedAsset}"
                  ItemsSource="{Binding Assets}"
                  MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>

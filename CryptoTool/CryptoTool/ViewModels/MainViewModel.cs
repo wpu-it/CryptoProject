@@ -29,7 +29,6 @@ namespace CryptoTool.ViewModels
         private ObservableCollection<Asset> _assets;
         private string _blockText;
         private string _exchangeLogoUrl;
-        private Asset _selectedAsset;
 
         public ObservableCollection<Asset> Assets
         {
@@ -54,18 +53,6 @@ namespace CryptoTool.ViewModels
             set {
                 _blockText = value;
                 OnPropertyChanged("BlockText");
-            }
-        }
-        public Asset SelectedAsset
-        {
-            get { return _selectedAsset; }
-            set
-            {
-                if (value != _selectedAsset)
-                {
-                    _selectedAsset = value;
-                    OnPropertyChanged(nameof(SelectedAsset));
-                }
             }
         }
 
@@ -114,7 +101,6 @@ namespace CryptoTool.ViewModels
                             Image = coin.Image.Small,
                             Price = coin.Market_Data.Current_Price.USD
                         };
-                        // Getting data about exhchanges for every asset and finalizing work with model for details page
                         asset.AssetMarkets = new List<AssetMarket>();
                         for(int j = 0; j < 5; j++)
                         {
