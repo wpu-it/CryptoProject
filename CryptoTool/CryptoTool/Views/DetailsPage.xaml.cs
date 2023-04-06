@@ -42,19 +42,21 @@ namespace CryptoTool.Views
             }
         }
 
-        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        private async void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
             string value = tbxSearch.Text;
-            ;
+            await _viewModel.GetAsset(value);
         }
 
         private void DataGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var grid = sender as DataGrid;
             var item = grid.SelectedItem as AssetMarket;
-            var browser = new BrowserWindow(item.Trade_URL);
-            browser.Show();
-            ;
+            if(item is not null)
+            {
+                var browser = new BrowserWindow(item.Trade_URL);
+                browser.Show();
+            }
         }
     }
 }

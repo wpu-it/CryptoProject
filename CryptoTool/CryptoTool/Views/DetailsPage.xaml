@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Margin="15px 0">
             <Grid.RowDefinitions>
@@ -55,7 +55,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Source="{Binding Asset.Image}"
                    VerticalAlignment="Center"/>
@@ -113,11 +113,24 @@
         <chart:SfChart Grid.Column="1"
                        Grid.RowSpan="5"
                        Margin="0 10px">
-            
+            <chart:SfChart.PrimaryAxis>
+                <chart:DateTimeAxis  LabelFormat="MMM dd"/>
+            </chart:SfChart.PrimaryAxis>
+            <chart:SfChart.SecondaryAxis>
+                <chart:NumericalAxis/>
+            </chart:SfChart.SecondaryAxis>
+            <chart:CandleSeries
+                Close="Close"
+                High="High"
+                Low="Low"
+                Open="Open" BullFillColor="Green"
+                BearFillColor="Red"
+                XBindingPath="Date"
+                ItemsSource="{Binding PriceDetails}" />
         </chart:SfChart>
         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="Markets"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                   FontSize="20px"/>
+                   FontSize="22px" FontWeight="DemiBold"/>
         <DataGrid Grid.Row="6" Grid.ColumnSpan="2"
                   AutoGenerateColumns="False" CanUserAddRows="False"
                  CanUserSortColumns="False" CanUserResizeColumns="False" Padding="10px 0"
@@ -138,7 +151,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-                                    Header="Pair" Width="100">
+                                    Header="Pair" Width="150">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0}/{1}">
                             <Binding Path="Base"/>
@@ -147,7 +160,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-                                    Header="Price" Width="150">
+                                    Header="Price" Width="100">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} $">
                             <Binding Path="Price"></Binding>

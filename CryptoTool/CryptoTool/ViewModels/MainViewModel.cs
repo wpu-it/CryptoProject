@@ -75,50 +75,58 @@ namespace CryptoTool.ViewModels
             {
                 string json = await client.GetStringAsync(url);
                 var exchange = JsonConvert.DeserializeObject<Exchange>(json);
-                ExchangeLogoUrl = exchange.Tickers[0].Market.Logo;
-                List<Asset> assets = new List<Asset>();
-                for (int i = 0; i < exchange.Tickers.Count; i++)
+                if(exchange is not null)
                 {
-                    var found_element = assets.Find((ass) =>
+                    ExchangeLogoUrl = exchange.Tickers[0].Market.Logo;
+                    List<Asset> assets = new List<Asset>();
+                    for (int i = 0; i < exchange.Tickers.Count; i++)
                     {
-                        return ass.Id == exchange.Tickers[i].Coin_Id;
-                    });
-                    if (found_element is null)
-                    {
-                        // Getting more data about selected tickers
-                        url = $"https://api.coingecko.com/api/v3/coins/{exchange.Tickers[i].Coin_Id}?tickers=true&market_data=true&community_data=false&developer_data=false";
-                        json = await client.GetStringAsync(url);
-                        var coin = JsonConvert.DeserializeObject<Coin>(json);
-                        Asset asset = new Asset
+                        var found_element = assets.Find((ass) =>
                         {
-                            Id = coin.Id,
-                            Volume = exchange.Tickers[i].Volume,
-                            MarketCap = coin.Market_Data.Market_Cap.USD,
-                            PriceChange24hPercentage = coin.Market_Data.Price_Change_Percentage_24h_In_Currency.USD,
-                            TotalVolume = coin.Market_Data.Total_Volume.USD,
-                            Symbol = coin.Symbol.ToUpper(),
-                            Name = coin.Name,
-                            Image = coin.Image.Small,
-                            Price = coin.Market_Data.Current_Price.USD
-                        };
-                        asset.AssetMarkets = new List<AssetMarket>();
-                        for(int j = 0; j < 5; j++)
+                            return ass.Id == exchange.Tickers[i].Coin_Id;
+                        });
+                        if (found_element is null)
                         {
-                            asset.AssetMarkets.Add(new AssetMarket
+                            // Getting more data about selected tickers
+                            url = $"https://api.coingecko.com/api/v3/coins/{exchange.Tickers[i].Coin_Id}?tickers=true&market_data=true&community_data=false&developer_data=false";
+                            json = await client.GetStringAsync(url);
+                            var coin = JsonConvert.DeserializeObject<Coin>(json);
+                            if(coin is not null)
                             {
-                                Base = coin.Tickers[j].Base,
-                                Target = coin.Tickers[j].Target,
-                                MarketName = coin.Tickers[j].Market.Name,
-                                MarketImage = coin.Tickers[j].Market.Identifier,
-                                Price = coin.Tickers[j].Last,
-                                Trade_URL = coin.Tickers[j].Trade_URL
-                            });
+                                Asset asset = new Asset
+                                {
+                                    Id = coin.Id,
+                                    Volume = exchange.Tickers[i].Volume,
+                                    MarketCap = coin.Market_Data.Market_Cap.USD,
+                                    PriceChange24hPercentage = coin.Market_Data.Price_Change_Percentage_24h_In_Currency.USD,
+                                    TotalVolume = coin.Market_Data.Total_Volume.USD,
+                                    Symbol = coin.Symbol.ToUpper(),
+                                    Name = coin.Name,
+                                    Image = coin.Image.Small,
+                                    Price = coin.Market_Data.Current_Price.USD
+                                };
+                                asset.AssetMarkets = new List<AssetMarket>();
+                                // If API Key is small for testing all features set 'j < 1'
+                                for (int j = 0; j < 2; j++)
+                                {
+                                    asset.AssetMarkets.Add(new AssetMarket
+                                    {
+                                        Base = coin.Tickers[j].Base,
+                                        Target = coin.Tickers[j].Target,
+                                        MarketName = coin.Tickers[j].Market.Name,
+                                        MarketImage = coin.Tickers[j].Market.Identifier,
+                                        Price = coin.Tickers[j].Last,
+                                        Trade_URL = coin.Tickers[j].Trade_URL
+                                    });
+                                }
+                                assets.Add(asset);
+                            }
+                            // If API Key is small for testing all features set 'assets.Count' to 1
+                            if (assets.Count == 2) break;
                         }
-                        assets.Add(asset);
                     }
-                    if (assets.Count == 1) break;
+                    Assets = new ObservableCollection<Asset>(assets);
                 }
-                Assets = new ObservableCollection<Asset>(assets);
             }
         }
     }

@@ -12,7 +12,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="Beige"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        mc:Ignorable="d" Height="500" Width="800" Title="Main page">
+        mc:Ignorable="d" Title="Main page">
 
     <Grid>
         <Grid.RowDefinitions>
