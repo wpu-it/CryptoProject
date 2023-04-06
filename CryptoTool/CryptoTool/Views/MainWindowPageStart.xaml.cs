@@ -1,4 +1,5 @@
-﻿using CryptoTool.ViewModels;
+﻿using CryptoTool.Models;
+using CryptoTool.ViewModels;
 using Microsoft.Windows.Themes;
 using System;
 using System.Collections.Generic;
@@ -24,16 +25,16 @@ namespace CryptoTool.Views
     {
         private MainViewModel viewModel;
         private string _from;
-        public MainWindowPageStart(string from, MainViewModel viewModel)
+
+        public delegate void NavigationHandler(string destination, Asset asset);
+        public event NavigationHandler NavigationRequested;
+
+        public MainWindowPageStart(string from)
         {
             InitializeComponent();
-            this.viewModel = viewModel;
+            viewModel = new MainViewModel();
             DataContext = viewModel;
             _from = from;
-            if(from == "start")
-            {
-                btnBack.IsEnabled = false;
-            }
         }
         private async void ComboBoxExchanges_Selected(object sender, RoutedEventArgs e)
         {
@@ -43,10 +44,11 @@ namespace CryptoTool.Views
             await viewModel.GetData(value);
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            var grid = sender as DataGrid;
+            var item = grid.SelectedItem as Asset;
+            NavigationRequested?.Invoke("DetailPage", item);
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿using CryptoTool.Commands;
-using CryptoTool.Models;
+﻿using CryptoTool.Models;
 using CryptoTool.Models.Coins;
 using CryptoTool.Models.Exchanges;
 using Newtonsoft.Json;
@@ -18,8 +17,6 @@ namespace CryptoTool.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        public delegate void NavigationHandler(string destination);
-        public event NavigationHandler NavigationRequested;
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged(string info)
         {
@@ -28,11 +25,11 @@ namespace CryptoTool.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
+
         private ObservableCollection<Asset> _assets;
-        private ListCollectionView _view;
         private string _blockText;
         private string _exchangeLogoUrl;
-        private ProcessCommand _detailsCommand;
+        private Asset _selectedAsset;
 
         public ObservableCollection<Asset> Assets
         {
@@ -59,13 +56,19 @@ namespace CryptoTool.ViewModels
                 OnPropertyChanged("BlockText");
             }
         }
-        public ICollectionView View
+        public Asset SelectedAsset
         {
-            get { return _view; }
+            get { return _selectedAsset; }
+            set
+            {
+                if (value != _selectedAsset)
+                {
+                    _selectedAsset = value;
+                    OnPropertyChanged(nameof(SelectedAsset));
+                }
+            }
         }
-        public ProcessCommand DetailsCommand => _detailsCommand ?? (_detailsCommand = new ProcessCommand(obj => {
-            NavigationRequested?.Invoke("DetailsPage");
-        }));
+
         public MainViewModel()
         {
             SetInitialData();
@@ -73,8 +76,7 @@ namespace CryptoTool.ViewModels
 
         public async void SetInitialData()
         {
-            //await GetData("binance");
-            //_view = new ListCollectionView(Assets);
+            await GetData("binance");
         }
 
         public async Task GetData(string exchangeParam)
@@ -110,7 +112,7 @@ namespace CryptoTool.ViewModels
                             Price = coin.Market_Data.Current_Price.USD
                         });
                     }
-                    if (assets.Count == 5) break;
+                    if (assets.Count == 1) break;
                 }
                 Assets = new ObservableCollection<Asset>(assets);
             }

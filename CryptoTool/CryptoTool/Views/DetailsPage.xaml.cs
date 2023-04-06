@@ -1,4 +1,5 @@
-﻿using CryptoTool.ViewModels;
+﻿using CryptoTool.Models;
+using CryptoTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,22 +24,12 @@ namespace CryptoTool.Views
     {
         private string _from;
         private DetailsViewModel _viewModel;
-        public DetailsPage(string from, DetailsViewModel viewModel)
+        public DetailsPage(string from, Asset asset)
         {
             InitializeComponent();
             _from = from;
-            _viewModel = viewModel;
-            DataContext = viewModel;
-
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnHome_Click(object sender, RoutedEventArgs e)
-        {
+            _viewModel = new DetailsViewModel(asset);
+            DataContext = _viewModel;
 
         }
     }

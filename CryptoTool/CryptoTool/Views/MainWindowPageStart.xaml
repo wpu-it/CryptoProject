@@ -16,7 +16,6 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60px"></RowDefinition>
             <RowDefinition Height="100px"></RowDefinition>
             <RowDefinition Height="50px"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
@@ -26,19 +25,6 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Margin="20px 0"
-                    Orientation="Horizontal">
-            <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniLightButton"
-                    Margin="5px"
-                    x:Name="btnBack"
-                    Click="btnBack_Click">
-                <materialDesign:PackIcon Kind="ArrowLeftThick" />
-            </Button>
-        </StackPanel>
-        <StackPanel Grid.Row="1"
                    Grid.ColumnSpan="2"
                    HorizontalAlignment="Center"
                    Orientation="Horizontal">
@@ -54,7 +40,7 @@
                 <ComboBoxItem Name="Huobi" Content="Huobi" />
             </ComboBox>
         </StackPanel>
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="1"
                    Grid.ColumnSpan="2"
                    HorizontalAlignment="Center"
                    Orientation="Horizontal">
@@ -67,20 +53,16 @@
             <Image Margin="5px 0" Width="20" Source="{Binding ExchangeLogoUrl}"/>
         </StackPanel>
         <DataGrid AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                CanUserSortColumns="False"
+                 CanUserAddRows="False"
+                 CanUserSortColumns="False"
                  CanUserResizeColumns="False"
-                HeadersVisibility="All"
-                  Grid.Row="3"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="2"
-                ItemsSource="{Binding Assets}">
-            <DataGrid.InputBindings>
-                <MouseBinding
-                    MouseAction="LeftDoubleClick"
-                    Command="{Binding Path = DetailsCommand}"
-                    CommandParameter="{Binding Path = SelectedAsset}"/>
-            </DataGrid.InputBindings>
+                 HeadersVisibility="All"
+                 Grid.Row="2"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 SelectedItem="{Binding SelectedAsset}"
+                 ItemsSource="{Binding Assets}"
+                 MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="50" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>

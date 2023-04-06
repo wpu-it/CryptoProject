@@ -27,24 +27,6 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Margin="20px 0"
-                    Orientation="Horizontal">
-            <Button IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniLightButton"
-                    Margin="5px"
-                    x:Name="btnBack"
-                    Click="btnBack_Click">
-                <materialDesign:PackIcon Kind="ArrowLeftThick" />
-            </Button>
-            <Button Margin="5px" IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniLightButton"
-                    x:Name="btnHome" Click="btnHome_Click">
-                <materialDesign:PackIcon Kind="Home" />
-            </Button>
-        </StackPanel>
+        
     </Grid>
 </Page>
