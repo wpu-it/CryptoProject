@@ -15,6 +15,10 @@ namespace CryptoTool.Models
         public string Symbol { get; set; }
         public double Volume { get; set; }
         public double Price { get; set; }
+        public double TotalVolume { get; set; }
+        public double PriceChange24hPercentage { get; set; }
+        public double MarketCap { get; set; }
         public string Image { get; set; }
+        public List<AssetMarket> AssetMarkets { get; set; }
     }
 }

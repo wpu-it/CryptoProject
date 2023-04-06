@@ -99,18 +99,36 @@ namespace CryptoTool.ViewModels
                     if (found_element is null)
                     {
                         // Getting more data about selected tickers
-                        url = $"https://api.coingecko.com/api/v3/coins/{exchange.Tickers[i].Coin_Id}?tickers=false&market_data=true&community_data=false&developer_data=false";
+                        url = $"https://api.coingecko.com/api/v3/coins/{exchange.Tickers[i].Coin_Id}?tickers=true&market_data=true&community_data=false&developer_data=false";
                         json = await client.GetStringAsync(url);
                         var coin = JsonConvert.DeserializeObject<Coin>(json);
-                        assets.Add(new Asset
+                        Asset asset = new Asset
                         {
                             Id = coin.Id,
                             Volume = exchange.Tickers[i].Volume,
+                            MarketCap = coin.Market_Data.Market_Cap.USD,
+                            PriceChange24hPercentage = coin.Market_Data.Price_Change_Percentage_24h_In_Currency.USD,
+                            TotalVolume = coin.Market_Data.Total_Volume.USD,
                             Symbol = coin.Symbol.ToUpper(),
                             Name = coin.Name,
                             Image = coin.Image.Small,
                             Price = coin.Market_Data.Current_Price.USD
-                        });
+                        };
+                        // Getting data about exhchanges for every asset and finalizing work with model for details page
+                        asset.AssetMarkets = new List<AssetMarket>();
+                        for(int j = 0; j < 5; j++)
+                        {
+                            asset.AssetMarkets.Add(new AssetMarket
+                            {
+                                Base = coin.Tickers[j].Base,
+                                Target = coin.Tickers[j].Target,
+                                MarketName = coin.Tickers[j].Market.Name,
+                                MarketImage = coin.Tickers[j].Market.Identifier,
+                                Price = coin.Tickers[j].Last,
+                                Trade_URL = coin.Tickers[j].Trade_URL
+                            });
+                        }
+                        assets.Add(asset);
                     }
                     if (assets.Count == 1) break;
                 }

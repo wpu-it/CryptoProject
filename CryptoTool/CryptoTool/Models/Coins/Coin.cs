@@ -13,5 +13,6 @@ namespace CryptoTool.Models.Coins
         public string Name { get; set; }
         public Image Image { get; set; }
         public MarketData Market_Data { get; set; }
+        public List<CoinTicker> Tickers { get; set; }
     }
 }

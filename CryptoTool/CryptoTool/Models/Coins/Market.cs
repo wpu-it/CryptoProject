@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CryptoTool.Models.Exchanges
+namespace CryptoTool.Models.Coins
 {
-    public class Exchange
+    public class Market
     {
         public string Name { get; set; }
-        public string Image { get; set; }
-        public List<Ticker> Tickers { get; set; }
+        public string Identifier { get; set; }
     }
 }
