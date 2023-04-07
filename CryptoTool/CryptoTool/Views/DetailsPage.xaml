@@ -134,8 +134,7 @@
         <DataGrid Grid.Row="6" Grid.ColumnSpan="2"
                   AutoGenerateColumns="False" CanUserAddRows="False"
                  CanUserSortColumns="False" CanUserResizeColumns="False" Padding="10px 0"
-                 HeadersVisibility="All" Background="Beige" ItemsSource="{Binding Asset.AssetMarkets}"
-                  MouseLeftButtonUp="DataGrid_MouseDown">
+                 HeadersVisibility="All" Background="Beige" ItemsSource="{Binding Asset.AssetMarkets}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="50" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -167,11 +166,16 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridHyperlinkColumn IsReadOnly="True" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                <DataGridHyperlinkColumn IsReadOnly="True"
                                     Header="URL" Width="1*">
                     <DataGridHyperlinkColumn.Binding>
                         <Binding Path="Trade_URL"></Binding>
                     </DataGridHyperlinkColumn.Binding>
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="PreviewMouseDown" Handler="HyperlinkPreviewMouseDown"/>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
                 </DataGridHyperlinkColumn>
             </DataGrid.Columns>
         </DataGrid>

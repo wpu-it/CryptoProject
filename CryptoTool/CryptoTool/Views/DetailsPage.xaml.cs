@@ -2,6 +2,7 @@
 using CryptoTool.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,17 +47,17 @@ namespace CryptoTool.Views
         {
             string value = tbxSearch.Text;
             await _viewModel.GetAsset(value);
-        }
+        }    
 
-        private void DataGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void HyperlinkPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var grid = sender as DataGrid;
-            var item = grid.SelectedItem as AssetMarket;
-            if(item is not null)
+            var block = e.OriginalSource as TextBlock;
+            if (block is not null)
             {
-                var browser = new BrowserWindow(item.Trade_URL);
+                var browser = new BrowserWindow(block.DataContext.ToString());
                 browser.Show();
             }
+            e.Handled = true;
         }
     }
 }
